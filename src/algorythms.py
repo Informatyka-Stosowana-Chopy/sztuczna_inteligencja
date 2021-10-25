@@ -3,7 +3,7 @@ class Algorithm:
         self.current_bord = board
         self.children = []
         self.valid_moves = []
-        self.MOVES = 'LRUP'
+        self.MOVES = 'LRUD'
         self.SOLVED_BOARD = [[1, 2, 3, 4],
                              [5, 6, 7, 8],
                              [9, 10, 11, 12],
@@ -25,19 +25,26 @@ class Algorithm:
         :return:
         """
 
-        open_list = set()
+        open_list = []
         closed_list = set()
+        # TODO sets can't contains list, has to do sth
+        while self.current_bord == self.SOLVED_BOARD:
+            if self.current_bord not in closed_list:
+                self.get_children()
+                open_list.append(self.children)
+                closed_list.add(self.current_bord)
 
-        if self.current_bord == self.SOLVED_BOARD:
-            # TODO
-            return self.move_counter
+            self.current_bord = open_list[self.move_counter]
+            self.move_counter += 1
 
-        if self.current_bord not in closed_list:
-            self.is_valid_move()
-            self.get_children()
 
-    def is_valid_move(self):
+
+        return "solved"  # TODO
+
+    def _is_valid_move(self):
         """
+        used in get_children
+
         check if given direction is valid,
         f.g. if there is direction = 'L' it have to check if 0 is not on the extreme left
         :return:
@@ -82,6 +89,7 @@ class Algorithm:
         inside if statement append self.children with children of current board
         :return:
         """
+        self._is_valid_move()
         self.children = []
 
         if 'L' in self.valid_moves:

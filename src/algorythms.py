@@ -1,4 +1,3 @@
-from queue import Queue
 from copy import deepcopy
 
 
@@ -33,13 +32,14 @@ class Algorithm:
         open_list = []
         closed_list = []
         # TODO do sth to change list to set
-        while self.current_bord == self.SOLVED_BOARD:
+        while self.current_bord != self.SOLVED_BOARD:
             if self.current_bord not in closed_list:
                 self.get_children()
                 open_list.append(self.children)
                 closed_list.append(self.current_bord)
 
-            self.current_bord = open_list[self.move_counter]
+            self.current_bord = deepcopy(open_list[self.move_counter])
+            open_list[self.move_counter] = None
             self.move_counter += 1
 
 
@@ -50,50 +50,25 @@ class Algorithm:
         """
         used in get_children
 
-        check if given direction is valid,
-        f.g. if there is direction = 'L' it have to check if 0 is not on the extreme left
+        if 0 occurred on one of side, then the corresponding direction is removed from list valid_moves
         :return:
         """
-        flag = True
-        self.valid_moves = []
+        self.valid_moves = ['L', 'R', 'U', 'D']
 
-        for move in self.MOVES:
-            if move == 'L':
-                for i in range(4):
-                    if 0 in self.current_bord[i][0]:
-                        flag = False
-                        break
-                if flag:
-                    self.valid_moves.append('L')
-            elif move == 'R':
-                for i in range(4):
-                    if 0 in self.current_bord[i][3]:
-                        flag = False
-                        break
-                if flag:
-                    self.valid_moves.append('R')
-            elif move == 'U':
-                for i in range(4):
-                    if 0 in self.current_bord[0][i]:
-                        flag = False
-                        break
-                if flag:
-                    self.valid_moves.append('U')
-            elif move == 'D':
-                for i in range(4):
-                    if 0 in self.current_bord[3][i]:
-                        flag = False
-                        break
-                if flag:
-                    self.valid_moves.append('D')
-            else:
-                raise "Not valid move"
-            flag = True
+        for i in range(4):
+            if self.current_bord[i][0] == 0:
+                self.valid_moves.remove('L')
+            if self.current_bord[i][3] == 0:
+                self.valid_moves.remove('R')
+            if self.current_bord[0][i] == 0:
+                self.valid_moves.remove('U')
+            if self.current_bord[3][i] == 0:
+                self.valid_moves.remove('D')
 
     def __search_zero(self):
         for i in range(4):
             for j in range(4):
-                if self.SOLVED_BOARD[i][j] == 0:
+                if self.current_bord[i][j] == 0:
                     return i, j
         return ValueError
 
@@ -104,27 +79,30 @@ class Algorithm:
         """
         self._is_valid_move()
         self.children = []
-        zero_coordinates = self.__search_zero()
+        y, x = self.__search_zero()
 
         if 'L' in self.valid_moves:
             left_board = deepcopy(self.current_bord)
-            left_board[zero_coordinates[0]][zero_coordinates[1]], left_board[zero_coordinates[0]][zero_coordinates[1] -1] \
-                = left_board[zero_coordinates[0]][zero_coordinates[1] -1], left_board[zero_coordinates[0]][zero_coordinates[1]]
+            left_board[y][x], left_board[y][x - 1] = left_board[y][x - 1], left_board[y][x]
             self.children.append(left_board)
         if 'R' in self.valid_moves:
             right_board = deepcopy(self.current_bord)
-            right_board[zero_coordinates[0]][zero_coordinates[1]], right_board[zero_coordinates[0]][zero_coordinates[1] + 1] \
-                = right_board[zero_coordinates[0]][zero_coordinates[1] + 1], right_board[zero_coordinates[0]][zero_coordinates[1]]
+            right_board[y][x], right_board[y][x + 1] = right_board[y][x + 1], right_board[y][x]
             self.children.append(right_board)
         if 'U' in self.valid_moves:
+            """
+            to go up we have to decrease value because it isn't cartesian system.
+            it starts from top left corner and this is (0, 0) point.
+            """
             up_board = deepcopy(self.current_bord)
-            up_board[zero_coordinates[0]][zero_coordinates[1]], up_board[zero_coordinates[0] - 1][zero_coordinates[1]] \
-                = up_board[zero_coordinates[0] - 1][zero_coordinates[1]], up_board[zero_coordinates[0]][zero_coordinates[1]]
+            up_board[y][x], up_board[y - 1][x] = up_board[y - 1][x], up_board[y][x]
             self.children.append(up_board)
         if 'D' in self.valid_moves:
+            """
+            according to above, there is + to go down.
+            """
             down_board = deepcopy(self.current_bord)
-            down_board[zero_coordinates[0]][zero_coordinates[1]], down_board[zero_coordinates[0] + 1][zero_coordinates[1]] \
-                = down_board[zero_coordinates[0] + 1][zero_coordinates[1]], down_board[zero_coordinates[0]][zero_coordinates[1]]
+            down_board[y][x], down_board[y + 1][x] = down_board[y + 1][x], down_board[y][x]
             self.children.append(down_board)
 
 

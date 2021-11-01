@@ -10,6 +10,7 @@ from copy import deepcopy
 class Algorithm:
     def __init__(self, board: list):
         self.current_board = board
+        self.current_board_tuple = tuple(tuple(x) for x in self.current_board)
         self.children = []
         self.valid_moves = []
         self.MOVES = 'LRUD'
@@ -35,22 +36,27 @@ class Algorithm:
         :return:
         """
 
-        open_list = []
-        closed_list = []
+        open_list = set()
+        closed_list = set()
         # TODO do sth to change list to set
 
-        open_list.append(self.current_board)
+        open_list.add(self.current_board_tuple)
         while self.current_board != self.SOLVED_BOARD:
-            if self.current_board not in closed_list:
+            self.current_board_tuple = open_list.pop()
+            self.update_list()
+            if self.current_board == self.SOLVED_BOARD:
+                return f"solved in {self.move_counter - 1} moves"  # TODO
+
+            if self.current_board_tuple not in closed_list:
                 self.get_children()
                 for child in self.children:
-                    open_list.append(child)
-                closed_list.append(self.current_board)
+                    open_list.add(child)
+                closed_list.add(self.current_board_tuple)
 
-            open_list[self.move_counter] = None
-            self.print_all_values()
+            # self.print_all_values()
             self.move_counter += 1
-            self.current_board = open_list[self.move_counter]
+            if self.move_counter >= 10000:
+                return "10k poszło"
 
         return f"solved in {self.move_counter - 1} moves"  # TODO
 
@@ -76,7 +82,7 @@ class Algorithm:
     def __search_zero(self):
         for y in range(4):
             for x in range(4):
-                if self.current_board[y][x] == 0:
+                if self.current_board_tuple[y][x] == 0:
                     return y, x
 
     def get_children(self):
@@ -91,11 +97,11 @@ class Algorithm:
         if 'L' in self.valid_moves:
             left_board = deepcopy(self.current_board)
             left_board[y][x], left_board[y][x - 1] = left_board[y][x - 1], left_board[y][x]
-            self.children.append(left_board)
+            self.children.append(self.change_list_to_tuple(left_board))
         if 'R' in self.valid_moves:
             right_board = deepcopy(self.current_board)
             right_board[y][x], right_board[y][x + 1] = right_board[y][x + 1], right_board[y][x]
-            self.children.append(right_board)
+            self.children.append(self.change_list_to_tuple(right_board))
         if 'U' in self.valid_moves:
             """
             to go up we have to decrease value because it isn't cartesian system.
@@ -103,14 +109,14 @@ class Algorithm:
             """
             up_board = deepcopy(self.current_board)
             up_board[y][x], up_board[y - 1][x] = up_board[y - 1][x], up_board[y][x]
-            self.children.append(up_board)
+            self.children.append(self.change_list_to_tuple(up_board))
         if 'D' in self.valid_moves:
             """
             according to above, there is + to go down.
             """
             down_board = deepcopy(self.current_board)
             down_board[y][x], down_board[y + 1][x] = down_board[y + 1][x], down_board[y][x]
-            self.children.append(down_board)
+            self.children.append(self.change_list_to_tuple(down_board))
 
     def print_all_values(self):
         print(f"TURN: {self.move_counter}")
@@ -127,8 +133,14 @@ class Algorithm:
         print("\n")
         print(f"Valid moves =  {self.valid_moves}")
 
+    @staticmethod
+    def change_list_to_tuple(board: list):
+        return tuple(tuple(x) for x in board)
 
-#####################################3
+    def update_list(self):
+        self.current_board = list(list(x) for x in self.current_board_tuple)
+
+#####################################
     def dfs(self):
         """
         wgłąb

@@ -48,10 +48,11 @@ class Algorithm:
                 closed_list.append(self.current_board)
 
             open_list[self.move_counter] = None
-            self.print_all_values()
+            # self.print_all_values()
             self.move_counter += 1
             self.current_board = open_list[self.move_counter]
-
+            if self.move_counter >= 30000:
+                return "30k ze zwykłym algorytmem"
         return f"solved in {self.move_counter - 1} moves"  # TODO
 
     def _is_valid_move(self):

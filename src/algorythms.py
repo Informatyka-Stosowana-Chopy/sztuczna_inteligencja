@@ -1,13 +1,9 @@
 from copy import deepcopy
-
-# TODO
-#   make board as 2D numpy array
-#   they may be hashable
-#   TODO check if they are
-#       then if yes change open_list and closed_list to set type
+from abc import ABC, abstractmethod
 
 
-class Algorithm:
+class Algorithm(ABC):
+
     def __init__(self, board: list):
         self.current_board = board
         self.current_board_tuple = tuple(tuple(x) for x in self.current_board)
@@ -21,44 +17,9 @@ class Algorithm:
         self.move_counter = 0
         self.solution_moves = ''
 
-    def bfs(self):
-        """
-        wszerz
-
-        story:
-        check if the board is solved
-        check if the bord isn't in closed list
-        check valid moves
-        get children
-        check if the children are solved
-        append open list with children (if already doesn't exist)
-        if it is ont valid board, then remove from open list and add to closed
-        :return:
-        """
-
-        open_list = set()
-        closed_list = set()
-        # TODO do sth to change list to set
-
-        open_list.add(self.current_board_tuple)
-        while self.current_board != self.SOLVED_BOARD:
-            self.current_board_tuple = open_list.pop()
-            self.update_list()
-            if self.current_board == self.SOLVED_BOARD:
-                return f"solved in {self.move_counter - 1} moves"  # TODO
-
-            if self.current_board_tuple not in closed_list:
-                self.get_children()
-                for child in self.children:
-                    open_list.add(child)
-                closed_list.add(self.current_board_tuple)
-
-            # self.print_all_values()
-            self.move_counter += 1
-            if self.move_counter >= 10000:
-                return "10k poszło"
-
-        return f"solved in {self.move_counter - 1} moves"  # TODO
+    @abstractmethod
+    def simulation(self):
+        pass
 
     def _is_valid_move(self):
         """
@@ -139,18 +100,3 @@ class Algorithm:
 
     def update_list(self):
         self.current_board = list(list(x) for x in self.current_board_tuple)
-
-#####################################
-    def dfs(self):
-        """
-        wgłąb
-        :return:
-        """
-        pass
-
-    def a_star(self):
-        """
-        heurystyka
-        :return:
-        """
-        pass

@@ -4,7 +4,7 @@ from src.reader import Reader
 
 class Test:
     """This class collected all tests in this scope"""
-    
+
     def test_reader(self):
         """this test verify if board is read properly"""
         ##########################################

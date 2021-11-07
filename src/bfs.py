@@ -1,4 +1,5 @@
 from algorythms import Algorithm
+from queue import Queue
 
 
 class Bfs(Algorithm):
@@ -21,13 +22,12 @@ class Bfs(Algorithm):
         :return:
         """
 
-        open_list = set()
+        open_list = Queue()
         closed_list = set()
-        # TODO do sth to change list to set
 
-        open_list.add(self.current_board_tuple)
+        open_list.put(self.current_board_tuple)
         while self.current_board != self.SOLVED_BOARD:
-            self.current_board_tuple = open_list.pop()
+            self.current_board_tuple = open_list.get()
             self.update_list()
             if self.current_board == self.SOLVED_BOARD:
                 return f"solved in {self.move_counter - 1} moves"  # TODO
@@ -35,7 +35,8 @@ class Bfs(Algorithm):
             if self.current_board_tuple not in closed_list:
                 self.get_children()
                 for child in self.children:
-                    open_list.add(child)
+                    if child not in closed_list:
+                        open_list.put(child)
                 closed_list.add(self.current_board_tuple)
 
             # self.print_all_values()

@@ -1,19 +1,41 @@
-from algorythms import Algorithm
+from bfs import Bfs
+from dfs import Dfs
+from reader import Reader
 import time
 
-board = [[1, 2, 3, 4],
-         [5, 6, 7, 8],
-         [9, 10, 0, 11],
-         [13, 14, 15, 12]]
+#####################################
+# CONDITION
+#####################################
 
-board_2 = [[0, 1, 2, 7],
-           [8, 9, 12, 10],
-           [13, 3, 6, 4],
-           [15, 14, 11, 5]]
+board = Reader.read()
 
-bfs = Algorithm(board_2)
-begin = time.time()
-print(bfs.bfs())
+#####################################
+# DFS
+#####################################
+dfs = Dfs(board)
+
+begin_dfs = time.time()
+dfs.simulation()
+end_dfs = time.time()
+
+#####################################
+# BFS
+#####################################
+bfs = Bfs(board)
+
+begin_bfs = time.time()
+bfs.simulation()
+end_bfs = time.time()
+
+#####################################
+# PRINT RESULTS
+#####################################
+print("\n")
+print("#################################")
+print(f"DFS time: {end_dfs - begin_dfs}")
+print(f"TURNS: {dfs.move_counter}")
+print("#################################")
+print(f"BFS time: {end_bfs - begin_bfs}")
 print(f"TURNS: {bfs.move_counter}")
-end = time.time()
-print(f"Time: {end - begin}")
+print("#################################")
+print("\n")

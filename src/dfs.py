@@ -24,7 +24,7 @@ class Dfs(Algorithm):
                     return f"solved in {self.move_counter - 1} moves"  # TODO
 
                 if self.current_board_tuple not in closed_list:
-                    self.parents.append(self.current_board_tuple)
+                    self.parents.append(self.current_board_tuple)  # TODO
                     self.get_children()
                     for child in reversed(self.children):
                         if child not in closed_list:

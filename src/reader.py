@@ -4,8 +4,8 @@ import os
 class Reader:
 
     @staticmethod
-    def read():
-        with open(os.path.join(os.getcwd(), "data/board.txt"), 'r') as file:
+    def read(file_name: str):
+        with open(os.path.join(os.getcwd(), f"data/{file_name}.txt"), 'r') as file:
             result = [[int(x) for x in line.split()] for line in file]
         return result
 

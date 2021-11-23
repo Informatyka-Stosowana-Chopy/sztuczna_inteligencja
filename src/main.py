@@ -6,13 +6,13 @@ import time
 #####################################
 # CONDITION
 #####################################
-
-board = Reader.read()
-
+FILE_NAME = "board"
+board = Reader.read(FILE_NAME)
+MAX_DEPTH = 20
 #####################################
 # DFS
 #####################################
-dfs = Dfs(board)
+dfs = Dfs(board, MAX_DEPTH)
 
 begin_dfs = time.time()
 dfs.simulation()

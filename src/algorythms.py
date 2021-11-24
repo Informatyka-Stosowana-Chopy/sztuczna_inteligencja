@@ -17,6 +17,7 @@ class Algorithm(ABC):
         self.move_counter = 0
         self.solution_moves = ''
         self.parents = []
+        self.length_of_solution = 0
 
     @abstractmethod
     def simulation(self):

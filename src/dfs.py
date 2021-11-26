@@ -22,7 +22,7 @@ class Dfs(Algorithm):
             self.length_of_solution += 1
             self.depth = len(self.node.way) - 1
 
-            if self.move_counter < self.max_depth or 0 == 0:
+            if self.depth < self.max_depth or 0 == 0:  # TODO
                 next_node = Node(open_list.get(), self.node, self.node.way)
                 self.node = next_node
                 if self.node.current_board == self.SOLVED_BOARD:
@@ -39,7 +39,7 @@ class Dfs(Algorithm):
                 # self.print_all_values()
 
             else:
-                # TODO
+                print("XD")
                 pass
 
         return f"solved in {self.move_counter - 1} moves"  # TODO

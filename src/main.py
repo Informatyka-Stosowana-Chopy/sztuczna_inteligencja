@@ -2,17 +2,19 @@ from bfs import Bfs
 from dfs import Dfs
 from reader import Reader
 import time
-
+from node import Node
 #####################################
 # CONDITION
 #####################################
 FILE_NAME = "board"
+
 board = Reader.read(FILE_NAME)
 MAX_DEPTH = 20
+start_node = Node(board, "ROOT", None, [])
 #####################################
 # DFS
 #####################################
-dfs = Dfs(board, MAX_DEPTH)
+dfs = Dfs(start_node, MAX_DEPTH)
 
 begin_dfs = time.time()
 dfs.simulation()

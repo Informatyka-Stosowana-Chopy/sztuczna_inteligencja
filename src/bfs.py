@@ -1,12 +1,14 @@
-from algorythms import Algorithm
+from algorythms import Algorithm, count_time
 from queue import Queue
+from node import Node
 
 
 class Bfs(Algorithm):
 
-    def __init__(self, board: list):
+    def __init__(self, board: Node):
         super().__init__(board)
 
+    @count_time
     def simulation(self):
         """
         wszerz
@@ -25,21 +27,21 @@ class Bfs(Algorithm):
         open_list = Queue()
         closed_list = set()
 
-        open_list.put(self.current_board_tuple)
-        while self.current_board != self.SOLVED_BOARD:
-            self.current_board_tuple = open_list.get()
-            self.update_list()
-            if self.current_board == self.SOLVED_BOARD:
-                return f"solved in {self.length_of_solution - 1} moves"  # TODO
+        open_list.put(self.node)
+        while not open_list.empty():
+            if self.is_solved():
+                return self._print_and_return_results()
 
-            if self.current_board_tuple not in closed_list:
-                self.get_children()
-                for child in self.children:
-                    if child not in closed_list:
+            self.move_counter += 1
+            self.node = open_list.get()
+
+            if self.node.current_board_tuple not in closed_list:
+                closed_list.add(self.node.current_board_tuple)
+                self.node.get_children()
+
+                for child in self.node.children:
+                    if child.node.current_board_tuple not in closed_list:
                         open_list.put(child)
-                closed_list.add(self.current_board_tuple)
 
-            # self.print_all_values()
-            self.length_of_solution += 1
-
-        return f"solved in {self.length_of_solution - 1} moves"  # TODO
+        print("No solution founded!")
+        return "No solution founded!"

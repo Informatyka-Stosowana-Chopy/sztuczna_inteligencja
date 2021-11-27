@@ -10,7 +10,6 @@ class Node:
         self.parent = parent
         self.last_move = None
         self.way = way.copy()
-        self.way.append(self.last_move)
         self.valid_moves = []
 
     def _is_valid_move(self):

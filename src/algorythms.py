@@ -1,7 +1,17 @@
-from copy import deepcopy
 from abc import ABC, abstractmethod
 
 from node import Node
+
+import time
+
+
+def count_time(func):
+    def wrapper(*args):
+        begin_time = time.time()
+        func(*args)
+        end_time = time.time()
+        print("SOLUTION TIME:", end_time - begin_time)
+    return wrapper
 
 
 class Algorithm(ABC):
@@ -13,24 +23,21 @@ class Algorithm(ABC):
                              [9, 10, 11, 12],
                              [13, 14, 15, 0]]
         self.move_counter = 0
-        self.solution_moves = ''
-        self.length_of_solution = 0
+        self.results = ""
 
     @abstractmethod
     def simulation(self):
         pass
 
-    def print_all_values(self):
-        print(f"TURN: {self.move_counter}")
-        print(self.node.current_board)
-        print(self.SOLVED_BOARD)
-        print("\n")
-        print("CURRENT BOARD:")
-        for line in self.current_board:
-            print(line)
-        print("\n")
-        print("CHILDREN:")
-        for child in self.children:
-            print(child)
-        print("\n")
-        print(f"Valid moves =  {self.valid_moves}")
+    def is_solved(self):
+        if self.node.current_board == self.SOLVED_BOARD:
+            return True
+        return False
+
+    def _print_and_return_results(self):
+        self.results = "WAY: " + str(self.node.way) + "\n"
+        self.results += "DEPTH: " + str(len(self.node.way)) + "\n"
+        self.results += "ITERATIONS: " + str(self.move_counter)
+        # Time is printed in decorators
+        print(self.results)
+        return self.results

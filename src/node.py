@@ -88,4 +88,3 @@ class Node:
 
     def update_list(self):
         self.current_board = list(list(x) for x in self.current_board_tuple)
-

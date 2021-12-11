@@ -11,6 +11,8 @@ class Node:
         self.last_move = None
         self.way = way.copy()
         self.valid_moves = []
+        self.distance = 0
+        self.children_distance = {}
 
     def _is_valid_move(self):
         """

@@ -1,46 +1,45 @@
-from algorythms import Algorithm
+from algorythms import Algorithm, count_time
 from queue import LifoQueue
+
+from node import Node
 
 
 class Dfs(Algorithm):
 
-    def __init__(self, board: list, max_depth: int):
+    def __init__(self, board: Node, max_depth: int):
         super().__init__(board)
         self.max_depth = max_depth
 
+    @count_time
     def simulation(self):
         open_list = LifoQueue()
         closed_list = set()
 
-        open_list.put(self.current_board_tuple)
-        while self.current_board != self.SOLVED_BOARD:
+        open_list.put(self.node)
+        while not open_list.empty():
+            if self.is_solved():
+                return self._print_and_return_results()
 
             self.move_counter += 1
-            self.length_of_solution += 1
+            self.node = open_list.get()
 
-            if self.move_counter < self.max_depth:
-                self.current_board_tuple = open_list.get()
-                self.update_list()
-                if self.current_board == self.SOLVED_BOARD:
-                    return f"solved in {self.move_counter - 1} moves"  # TODO
+            self.amount_of_visited_nodes += 1
+            if len(self.node.way) > self.reached_max_depth:
+                self.reached_max_depth = len(self.node.way)
 
-                if self.current_board_tuple not in closed_list:
-                    closed_list.add(self.current_board_tuple)
+            if len(self.node.way) > self.max_depth:
+                closed_list.add(self.node.current_board_tuple)
+                self.node = self.node.parent
 
-                    self.parents.append(self.current_board_tuple)  # TODO
-                    self.get_children()
-                    for child in reversed(self.children):
-                        if child not in closed_list:
-                            open_list.put(child)
-                            self.solution_moves += ""  # TODO
+            if self.node.current_board_tuple not in closed_list:
+                closed_list.add(self.node.current_board_tuple)
+                self.node.get_children()
+                for child in reversed(self.node.children):
+                    if child.current_board_tuple not in closed_list:
+                        open_list.put(child)
 
+            self.amount_of_processed_nodes += 1
 
-                # self.print_all_values()
-
-            else:
-                # TODO
-                closed_list.add(self.parents[-1])
-                self.parents.pop(-1)
-                self.move_counter = 0
-
-        return f"solved in {self.move_counter - 1} moves"  # TODO
+        print("No solution founded!")
+        self.len_of_solution = -1
+        return "No solution founded!"

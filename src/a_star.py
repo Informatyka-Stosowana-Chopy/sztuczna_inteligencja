@@ -9,23 +9,25 @@ class Astar(Algorithm):
     def __init__(self, board: Node, heuristic: str):
         super().__init__(board)
 
-        if heuristic == 'hamming':
+        if heuristic == 'hamm':
             self.calculate_heuristic = self._calculate_hamming_distance
-        elif heuristic == 'manhattan':
+        elif heuristic == 'manh':
             self.calculate_heuristic = self._calculate_manhattan_distance
 
     @count_time
     def simulation(self):
-        amount_of_visited_nodes = 1
-        amount_of_processed_nodes = 1
 
         while True:
-            try:  # TODO
+            try:
                 if self.is_solved():
                     return self._print_and_return_results()
-                amount_of_processed_nodes += 1
+                self.amount_of_processed_nodes += 1
 
+                self.move_counter += 1
                 self.node.get_children()
+                if len(self.node.way) > self.reached_max_depth:
+                    self.reached_max_depth = len(self.node.way)
+
                 for child in self.node.children:
                     child.distance = self.calculate_heuristic(child.current_board)
                     self.node.children_distance[child] = child.distance
@@ -36,10 +38,11 @@ class Astar(Algorithm):
 
                 random_number = random.randint(0, len(nodes_with_minimum_distance) - 1)
                 self.node = nodes_with_minimum_distance[random_number]
-                amount_of_visited_nodes += 1
+                self.amount_of_visited_nodes += 1
 
             except MemoryError:
-                return -1  # TODO
+                self.len_of_solution = -1
+                return -1
 
     def _calculate_hamming_distance(self, board):
         hamming_distance = 0

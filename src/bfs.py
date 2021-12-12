@@ -35,6 +35,10 @@ class Bfs(Algorithm):
             self.move_counter += 1
             self.node = open_list.get()
 
+            self.amount_of_visited_nodes += 1
+            if len(self.node.way) > self.reached_max_depth:
+                self.reached_max_depth = len(self.node.way)
+
             if self.node.current_board_tuple not in closed_list:
                 closed_list.add(self.node.current_board_tuple)
                 self.node.get_children()
@@ -43,5 +47,8 @@ class Bfs(Algorithm):
                     if child.current_board_tuple not in closed_list:
                         open_list.put(child)
 
+            self.amount_of_processed_nodes += 1
+
         print("No solution founded!")
+        self.len_of_solution = -1
         return "No solution founded!"

@@ -10,7 +10,7 @@ def count_time(func):
         begin_time = time.time()
         func(*args)
         end_time = time.time()
-        print("SOLUTION TIME:", end_time - begin_time)
+        print("SOLUTION TIME: " + str(end_time - begin_time) + "\n")
     return wrapper
 
 
@@ -24,6 +24,10 @@ class Algorithm(ABC):
                              [13, 14, 15, 0]]
         self.move_counter = 0
         self.results = ""
+        self.amount_of_visited_nodes = 0
+        self.amount_of_processed_nodes = 0
+        self.reached_max_depth = 0
+        self.len_of_solution = 0
 
     @abstractmethod
     def simulation(self):
@@ -37,7 +41,10 @@ class Algorithm(ABC):
     def _print_and_return_results(self):
         self.results = "WAY: " + str(self.node.way) + "\n"
         self.results += "DEPTH: " + str(len(self.node.way)) + "\n"
-        self.results += "ITERATIONS: " + str(self.move_counter)
+        self.results += "MAX SEARCHED DEPTH: " + str(len(self.node.way)) + "\n"  # TODO
+        self.results += "ITERATIONS: " + str(self.move_counter) + "\n"
+        self.results += "VISITED NODES: " + str(self.amount_of_visited_nodes) + "\n"
+        self.results += "PROCESSED NODES: " + str(self.amount_of_processed_nodes)
         # Time is printed in decorators
         print(self.results)
         return self.results

@@ -12,9 +12,8 @@ class Reader:
             height = size[1]
 
         with open(os.path.join(os.getcwd(), f"data/{file_name}"), 'r') as file:
-            # TODO read first line as width and height
             result = tuple(tuple(int(x) for x in line.split()) for i, line in enumerate(file) if i != 0)
-        return result, int(width), int(height)  # TODO return x, y, result?
+        return result, int(width), int(height)
 
     @staticmethod
     def save_solution(file_name: str, len_solution: int, solution: list):

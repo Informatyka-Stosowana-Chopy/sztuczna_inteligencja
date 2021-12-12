@@ -41,7 +41,7 @@ class Algorithm(ABC):
     def _print_and_return_results(self):
         self.results = "WAY: " + str(self.node.way) + "\n"
         self.results += "DEPTH: " + str(len(self.node.way)) + "\n"
-        self.results += "MAX SEARCHED DEPTH: " + str(len(self.node.way)) + "\n"  # TODO
+        self.results += "MAX SEARCHED DEPTH: " + str(len(self.node.way)) + "\n"
         self.results += "ITERATIONS: " + str(self.move_counter) + "\n"
         self.results += "VISITED NODES: " + str(self.amount_of_visited_nodes) + "\n"
         self.results += "PROCESSED NODES: " + str(self.amount_of_processed_nodes)

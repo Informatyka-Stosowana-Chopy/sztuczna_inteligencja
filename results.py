@@ -1,6 +1,6 @@
 import subprocess
-
-BOARDS = ['board_1.txt', 'board_2.txt', 'board_3.txt', 'board_4.txt', 'board_5.txt', 'board_6.txt', 'board_7.txt']
+import os
+BOARDS = os.listdir("data/")
 STRATEGY = ['RDUL', 'RDLU', 'DRUL', 'DRLU', 'LUDR', 'LURD', 'ULDR', 'ULRD']
 HEURISTIC = ['manh', 'hamm']
 

@@ -14,3 +14,4 @@ class Reader:
     def save(content_to_save: str):
         with open(os.path.join(os.getcwd(), "results/pattern.txt"), 'w') as file:
             file.write(content_to_save)
+        # TODO make file to save always in the same way

@@ -3,7 +3,7 @@ from copy import copy
 
 
 class Node:
-    def __init__(self, current_board_tuple: tuple, parent, way: list, strategy: str = 'LRUD'):
+    def __init__(self, current_board_tuple: tuple, parent, way: list, strategy: str):
         self.current_board_tuple: tuple = current_board_tuple
         self.current_board: list = list(list(x) for x in self.current_board_tuple)
         self.children = []
@@ -13,7 +13,10 @@ class Node:
         self.valid_moves = []
         self.distance = 0
         self.children_distance = {}
-        self.strategy = strategy
+        if strategy == 'hamm' or strategy == 'manh':
+            self.strategy = 'LRUD'
+        else:
+            self.strategy = strategy
 
     def _is_valid_move(self):
         """

@@ -10,7 +10,6 @@ for i, board in enumerate(BOARDS):
         subprocess.run(f"py src/main.py dfs {strategy} {board} solution_{i+1}_dfs.txt statistic{i+1}_dfs.txt")
 
     for heuristic in HEURISTIC:
-        subprocess.run(f"py src/main.py astr {heuristic} {board} solution_{i + 1}_manh.txt statistic{i+1}_manh.txt")
-        subprocess.run(f"py src/main.py astr {heuristic} {board} solution_{i + 1}_hamm.txt statistic{i+1}_hamm.txt")
+        subprocess.run(f"py src/main.py astr {heuristic} {board} solution_{i + 1}_{heuristic}.txt statistic_{i+1}_{heuristic}.txt")
 
 

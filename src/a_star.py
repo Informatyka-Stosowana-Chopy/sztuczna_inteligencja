@@ -6,9 +6,8 @@ from node import Node
 
 
 class Astar(Algorithm):
-    def __init__(self, board: Node, max_depth: int, heuristic: str):
+    def __init__(self, board: Node, heuristic: str):
         super().__init__(board)
-        self.max_depth = max_depth
 
         if heuristic == 'hamming':
             self.calculate_heuristic = self._calculate_hamming_distance
@@ -40,7 +39,7 @@ class Astar(Algorithm):
                 amount_of_visited_nodes += 1
 
             except MemoryError:
-                pass  # TODO
+                return -1  # TODO
 
     def _calculate_hamming_distance(self, board):
         hamming_distance = 0

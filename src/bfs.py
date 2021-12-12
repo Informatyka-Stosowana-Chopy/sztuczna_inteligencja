@@ -40,7 +40,7 @@ class Bfs(Algorithm):
                 self.node.get_children()
 
                 for child in self.node.children:
-                    if child.node.current_board_tuple not in closed_list:
+                    if child.current_board_tuple not in closed_list:
                         open_list.put(child)
 
         print("No solution founded!")

@@ -48,7 +48,8 @@ else:
     raise "wrong algorithm"
 end_time = time.time()
 
-program.len_of_solution = len(program.node.way)
+if program.len_of_solution != -1:
+    program.len_of_solution = len(program.node.way)
 time = round(end_time - begin_time, 3)
 
 # save solutution

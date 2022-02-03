@@ -47,7 +47,7 @@ class Bfs(Algorithm):
                     if child.current_board_tuple not in closed_list:
                         open_list.put(child)
 
-            self.amount_of_processed_nodes += 1
+                self.amount_of_processed_nodes += 1
 
         print("No solution founded!")
         self.len_of_solution = -1

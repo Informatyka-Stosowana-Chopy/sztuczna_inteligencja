@@ -52,7 +52,7 @@ class Astar(Algorithm):
             else:
                 self.len_of_solution = -1
                 return -1
-            
+
         self.len_of_solution = -1
         return -1
 

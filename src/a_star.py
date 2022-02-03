@@ -4,10 +4,13 @@ from algorythms import Algorithm, count_time
 
 from node import Node
 
+from queue import Queue
+
 
 class Astar(Algorithm):
     def __init__(self, board: Node, heuristic: str):
         super().__init__(board)
+        self.max_depth = 20
 
         if heuristic == 'hamm':
             self.calculate_heuristic = self._calculate_hamming_distance
@@ -16,17 +19,23 @@ class Astar(Algorithm):
 
     @count_time
     def simulation(self):
+        open_list = Queue()
+        closed_list = set()
 
-        while True:
-            try:
-                if self.is_solved():
-                    return self._print_and_return_results()
-                self.amount_of_processed_nodes += 1
+        open_list.put(self.node)
+        while not open_list.empty():
+            if self.is_solved():
+                return self._print_and_return_results()
 
-                self.move_counter += 1
+            self.move_counter += 1
+            self.node = open_list.get()
+            self.amount_of_visited_nodes += 1
+
+            if len(self.node.way) > self.reached_max_depth:
+                self.reached_max_depth = len(self.node.way)
+
+            if self.node.current_board_tuple not in closed_list:
                 self.node.get_children()
-                if len(self.node.way) > self.reached_max_depth:
-                    self.reached_max_depth = len(self.node.way)
 
                 for child in self.node.children:
                     child.distance = self.calculate_heuristic(child.current_board)
@@ -36,13 +45,12 @@ class Astar(Algorithm):
                 nodes_with_minimum_distance = [node for node in self.node.children_distance if
                                                self.node.children_distance[node] == minimum_distance]
 
-                random_number = random.randint(0, len(nodes_with_minimum_distance) - 1)
-                self.node = nodes_with_minimum_distance[random_number]
-                self.amount_of_visited_nodes += 1
+                for child in nodes_with_minimum_distance:
+                    open_list.put(child)
+                self.amount_of_processed_nodes += 1
 
-            except MemoryError:
-                self.len_of_solution = -1
-                return -1
+        self.len_of_solution = -1
+        return -1
 
     def _calculate_hamming_distance(self, board):
         hamming_distance = 0

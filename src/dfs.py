@@ -27,9 +27,9 @@ class Dfs(Algorithm):
             if len(self.node.way) > self.reached_max_depth:
                 self.reached_max_depth = len(self.node.way)
 
-            if len(self.node.way) > self.max_depth:
+            if len(self.node.way) >= self.max_depth:
                 closed_list.add(self.node.current_board_tuple)
-                self.node = self.node.parent
+                continue
 
             if self.node.current_board_tuple not in closed_list:
                 closed_list.add(self.node.current_board_tuple)

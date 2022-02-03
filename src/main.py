@@ -20,17 +20,17 @@ parser.add_argument('statistic_file')
 args = parser.parse_args()
 
 board, width, height = Reader.read(args.source_file)
-MAX_DEPTH = 22
+MAX_DEPTH = 20
 start_node = Node(board, "ROOT", [], args.strategy, height, width)
 
 begin_time = time.time()
 if args.algorithm == 'dfs':
-    print("DFS")
+    # print("DFS")
     program = Dfs(start_node, MAX_DEPTH)
     program.simulation()
     print("\n\n")
 elif args.algorithm == 'bfs':
-    print("BFS")
+    # print("BFS")
     program = Bfs(start_node)
     program.simulation()
 
@@ -52,7 +52,7 @@ program.len_of_solution = len(program.node.way)
 time = round(end_time - begin_time, 3)
 
 # save solutution
-Reader.save_solution(args.solution_file, program.len_of_solution, program.node.way)
+# Reader.save_solution(args.solution_file, program.len_of_solution, program.node.way) TODO
 
 # save statistic
 Reader.save_statistic(args.statistic_file, program.len_of_solution, program.amount_of_visited_nodes,

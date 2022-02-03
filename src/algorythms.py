@@ -10,7 +10,7 @@ def count_time(func):
         begin_time = time.time()
         func(*args)
         end_time = time.time()
-        print("SOLUTION TIME: " + str(end_time - begin_time) + "\n")
+        # print("SOLUTION TIME: " + str(end_time - begin_time) + "\n") TODO
     return wrapper
 
 
@@ -46,5 +46,5 @@ class Algorithm(ABC):
         self.results += "VISITED NODES: " + str(self.amount_of_visited_nodes) + "\n"
         self.results += "PROCESSED NODES: " + str(self.amount_of_processed_nodes)
         # Time is printed in decorators
-        print(self.results)
+        # print(self.results) TODO
         return self.results
